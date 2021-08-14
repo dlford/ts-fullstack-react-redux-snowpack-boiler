@@ -10,8 +10,8 @@ module.exports = {
     '@snowpack/plugin-typescript',
   ],
   routes: [
-    /* All routes to index (SPA) */
-    { match: 'routes', src: '.*', dest: '/index.html' },
+    /* Enable an SPA Fallback in development: */
+    // {"match": "routes", "src": ".*", "dest": "/index.html"},
   ],
   alias: {
     '~': './src',
