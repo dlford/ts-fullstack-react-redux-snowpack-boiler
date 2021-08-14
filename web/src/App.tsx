@@ -1,29 +1,34 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+} from 'react-router-dom';
 
-import Img from '~/styled/Img';
-import Centered from '~/styled/Centered';
+import ErrorBoundary from '~/ErrorBoundary';
 
-import { useAppSelector } from '~/hooks/useAppSelector';
-import ApiCallButton from '~/components/ApiCallButton';
-import ShowResult from '~/components/ShowResult';
-import WebsocketForm from '~/components/WebsocketForm';
-import logo from '~/logo.svg';
+const Canvas = lazy(() => import('~/pages/canvas'));
 
 export default function AppComponent(): JSX.Element {
-  const result = useAppSelector((state) => state.apiCall.result);
-
   return (
-    <Centered className='App'>
-      <Img
-        src={logo}
-        className='App-logo'
-        alt='logo'
-        width={300}
-        height={250}
-      />
-      <ApiCallButton />
-      <ShowResult result={result} />
-      <WebsocketForm />
-    </Centered>
+    <ErrorBoundary>
+      <Router>
+        <Suspense fallback={<div>loading (TODO)</div>}>
+          <Switch>
+            <Route exact path='/canvas'>
+              <Canvas />
+            </Route>
+            <Route path='/'>
+              <div>
+                <p>
+                  Check out <Link to='/canvas'>This</Link>
+                </p>
+              </div>
+            </Route>
+          </Switch>
+        </Suspense>
+      </Router>
+    </ErrorBoundary>
   );
 }
